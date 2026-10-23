@@ -5,8 +5,10 @@ import com.example.fitness_app.Enum.ActivityType;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.annotations.UpdateTimestamp;
 import org.hibernate.type.SqlTypes;
@@ -20,6 +22,7 @@ import java.util.List;
 
 @Entity
 @Data
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 public class Activity {
@@ -50,12 +53,16 @@ public class Activity {
     private HashMap<String, Object> additionalDetails;
 
 
-    @CreatedDate
+    @CreationTimestamp
     @Column(nullable = false, updatable = false)
     private LocalDateTime createdAt;
 
-    @LastModifiedDate
+    @UpdateTimestamp
+    @Column(nullable = false, updatable = true)
     private LocalDateTime updatedAt;
+
+    @CreationTimestamp
+    @Column(nullable = false, updatable = true)
     private LocalDateTime startTime;
 
 }

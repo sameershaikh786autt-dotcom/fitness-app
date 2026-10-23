@@ -39,23 +39,32 @@ public class UserService {
     }
 
     // DATA LENE K LIYE EK METHOD KYA KYA HAI
+
+
     private User mapToEntity(UserRegisterDTO userRegisterDTO) {
-        User user = new User();
-        user.setFirstName(userRegisterDTO.getFirstName());
-        user.setLastName(userRegisterDTO.getLastName());
-        user.setName(userRegisterDTO.getName());
-        user.setEmail(userRegisterDTO.getEmail());
-        user.setPassword(userRegisterDTO.getPassword());
-
-//        List.Of();
-//        List.of();
-
-        // default role yha s ayga
-        Roles defaultRole = Roles.USER;
-        user.setRole(defaultRole);
+        // USING BUILDER TO SAVE DATA INTO ENTITY
+        User user = User.builder()
+                .firstName(userRegisterDTO.getFirstName())
+                .lastName(userRegisterDTO.getLastName())
+                .name(userRegisterDTO.getName())
+                .email(userRegisterDTO.getEmail())
+                .role(Roles.USER)
+                .password(userRegisterDTO.getPassword())
+                .build();
 
 
 
+//        User user = new User();
+//        user.setFirstName(userRegisterDTO.getFirstName());
+//        user.setLastName(userRegisterDTO.getLastName());
+//        user.setName(userRegisterDTO.getName());
+//        user.setEmail(userRegisterDTO.getEmail());
+//        user.setPassword(userRegisterDTO.getPassword());
+////        List.Of();
+////        List.of();
+//        // default role yha s ayga
+//        Roles defaultRole = Roles.USER;
+//        user.setRole(defaultRole);
         return user;
     }
 
@@ -66,16 +75,28 @@ public class UserService {
 
     // RESPONSE K LIYE Y METHOD
     private UserResponseDTO mapToDTO(User user) {
-        UserResponseDTO userResponseDTO = new UserResponseDTO();
-        userResponseDTO.setUserId(user.getId());
-        userResponseDTO.setFirstName(user.getFirstName());
-        userResponseDTO.setLastName(user.getLastName());
-        userResponseDTO.setName(user.getName());
-        userResponseDTO.setEmail(user.getEmail());
-        userResponseDTO.setRole(user.getRole());
-        userResponseDTO.setCreatedAt(user.getCreatedAt());
-        userResponseDTO.setUpdatedAt(user.getUpdatedAt());
 
-        return userResponseDTO;
+        UserResponseDTO userResponse = UserResponseDTO.builder()
+                .userId(user.getId())
+                .firstName(user.getFirstName())
+                .lastName(user.getLastName())
+                .name(user.getName())
+                .email(user.getEmail())
+                .role(user.getRole())
+                .createdAt(LocalDateTime.now())
+                .updatedAt(LocalDateTime.now())
+                .build();
+
+//        UserResponseDTO userResponseDTO = new UserResponseDTO();
+//        userResponseDTO.setUserId(user.getId());
+//        userResponseDTO.setFirstName(user.getFirstName());
+//        userResponseDTO.setLastName(user.getLastName());
+//        userResponseDTO.setName(user.getName());
+//        userResponseDTO.setEmail(user.getEmail());
+//        userResponseDTO.setRole(user.getRole());
+//        userResponseDTO.setCreatedAt(user.getCreatedAt());
+//        userResponseDTO.setUpdatedAt(user.getUpdatedAt());
+
+        return userResponse;
     }
 }
