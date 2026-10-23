@@ -12,6 +12,8 @@ import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class RecommendationService {
@@ -85,5 +87,13 @@ public class RecommendationService {
 
 
         return response;
+    }
+
+    public List<Recommendation> getRecommendationsByUserId(String userid) {
+        return recommendationRepository.findByUserId(userid);
+    }
+
+    public List<Recommendation> getRecommendationsByActivityId(String actvityid) {
+        return recommendationRepository.findByActivityId(actvityid);
     }
 }
