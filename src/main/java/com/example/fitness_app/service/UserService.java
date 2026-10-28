@@ -1,15 +1,21 @@
 package com.example.fitness_app.service;
 
 
+import com.example.fitness_app.DTO.LoginDetails;
+import com.example.fitness_app.DTO.ResponseLogin;
 import com.example.fitness_app.DTO.UserRegisterDTO;
 import com.example.fitness_app.DTO.UserResponseDTO;
 import com.example.fitness_app.Enum.Roles;
 import com.example.fitness_app.globalException.PasswordValidation;
 import com.example.fitness_app.model.User;
 import com.example.fitness_app.repository.UserRepository;
-import jakarta.validation.constraints.NotBlank;
+import com.example.fitness_app.securityConfig.JwtService;
 import lombok.AllArgsConstructor;
-import org.hibernate.mapping.List;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -18,6 +24,9 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class UserService {
     private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
+    private final AuthenticationManager authenticationManager;
+    private final JwtService jwtService;
 
     public UserResponseDTO createUser(UserRegisterDTO userRegisterDTO) {
 
@@ -49,7 +58,7 @@ public class UserService {
                 .name(userRegisterDTO.getName())
                 .email(userRegisterDTO.getEmail())
                 .role(Roles.USER)
-                .password(userRegisterDTO.getPassword())
+                .password(passwordEncoder.encode(userRegisterDTO.getPassword()))
                 .build();
 
 
@@ -98,5 +107,26 @@ public class UserService {
 //        userResponseDTO.setUpdatedAt(user.getUpdatedAt());
 
         return userResponse;
+    }
+
+
+    // YHA P LOGIN S RELATED KAAM HO RHAA HAI
+    public ResponseLogin loginUser(LoginDetails loginDetails) {
+            UsernamePasswordAuthenticationToken authenToken =
+                    new UsernamePasswordAuthenticationToken(loginDetails.getEmail(), loginDetails.getPassword());
+
+            Authentication authentication = authenticationManager.authenticate(authenToken);
+
+        // 2. Authentication success hone ke baad UserDetails nikaali
+        UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+
+        // TOKEN GENERATE METHOD
+        String tokenGenerated = jwtService.generateToken(userDetails);
+
+        return ResponseLogin.builder()
+                .message("Successfully logged in and Token generated")
+                .email(userDetails.getUsername())
+                .token(tokenGenerated)
+                .build();
     }
 }
