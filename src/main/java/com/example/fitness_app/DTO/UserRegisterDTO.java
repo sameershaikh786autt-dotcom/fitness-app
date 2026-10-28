@@ -21,7 +21,7 @@ public class UserRegisterDTO {
     private String name;
 
     @NotBlank
-    @Email(message = "email already exists")
+    @Email(message = "Invalid email")
     private String email;
 
     @NotBlank
