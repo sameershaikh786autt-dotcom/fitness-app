@@ -18,6 +18,7 @@ import java.util.List;
 
 //@Entity(name = "user")
 @Entity
+@Table(name = "fitness-table")
 @Data
 @Builder
 @AllArgsConstructor

@@ -2,7 +2,9 @@ package com.example.fitness_app.securityConfig;
 
 import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.OpenAPI;
+import io.swagger.v3.oas.models.info.Contact;
 import io.swagger.v3.oas.models.info.Info;
+import io.swagger.v3.oas.models.info.License;
 import io.swagger.v3.oas.models.security.SecurityRequirement;
 import io.swagger.v3.oas.models.security.SecurityScheme;
 import org.springframework.context.annotation.Bean;
@@ -19,7 +21,18 @@ public class SwaggerConfig {
                 .info( new Info()
                         .title("Fitness Tracker Microservice API")
                         .version("1.0")
-                        .description("REST API Documentation with JWT Bearer Authentication"))
+                        .description("REST API Documentation with JWT Bearer Authentication")
+                        .contact( new Contact()
+                                .name("sameer@gamil.dummy")
+                                .url("localhost:8080")
+                                .name("sameer")
+                        )
+                        .license(new License()
+                                .name("Apache 2.0")
+                                .url("http://springdoc.org")
+                        )
+                )
+
                 // Global security requirement add karta hai taaki har endpoint par lock icon dikhe
                 .addSecurityItem(new SecurityRequirement().addList(securitySchemeName))
                 .components(new Components()
